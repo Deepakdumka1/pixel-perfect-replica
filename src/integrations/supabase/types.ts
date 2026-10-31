@@ -14,7 +14,279 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      app_change_log: {
+        Row: {
+          applied_at: string
+          description: string
+          id: string
+        }
+        Insert: {
+          applied_at?: string
+          description: string
+          id?: string
+        }
+        Update: {
+          applied_at?: string
+          description?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      app_config: {
+        Row: {
+          chaos_mode: boolean
+          elements: Json
+          id: string
+          updated_at: string
+          version_label: string
+        }
+        Insert: {
+          chaos_mode?: boolean
+          elements?: Json
+          id?: string
+          updated_at?: string
+          version_label?: string
+        }
+        Update: {
+          chaos_mode?: boolean
+          elements?: Json
+          id?: string
+          updated_at?: string
+          version_label?: string
+        }
+        Relationships: []
+      }
+      jira_comments: {
+        Row: {
+          author: string
+          body: string
+          created_at: string
+          id: string
+          ticket_id: string
+        }
+        Insert: {
+          author?: string
+          body: string
+          created_at?: string
+          id?: string
+          ticket_id: string
+        }
+        Update: {
+          author?: string
+          body?: string
+          created_at?: string
+          id?: string
+          ticket_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jira_comments_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      run_results: {
+        Row: {
+          attempts: Json
+          duration_ms: number
+          id: string
+          repair_log: Json
+          run_id: string
+          status: string
+          test_id: string | null
+          test_name: string
+          visual: Json | null
+        }
+        Insert: {
+          attempts?: Json
+          duration_ms?: number
+          id?: string
+          repair_log?: Json
+          run_id: string
+          status: string
+          test_id?: string | null
+          test_name: string
+          visual?: Json | null
+        }
+        Update: {
+          attempts?: Json
+          duration_ms?: number
+          id?: string
+          repair_log?: Json
+          run_id?: string
+          status?: string
+          test_id?: string | null
+          test_name?: string
+          visual?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "run_results_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "runs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "run_results_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      runs: {
+        Row: {
+          app_version: string
+          failed: number
+          finished_at: string | null
+          flaky_count: number
+          id: string
+          mode: string
+          passed: number
+          repaired: number
+          started_at: string
+          status: string
+          ticket_id: string
+          total_tests: number
+        }
+        Insert: {
+          app_version?: string
+          failed?: number
+          finished_at?: string | null
+          flaky_count?: number
+          id?: string
+          mode?: string
+          passed?: number
+          repaired?: number
+          started_at?: string
+          status?: string
+          ticket_id: string
+          total_tests?: number
+        }
+        Update: {
+          app_version?: string
+          failed?: number
+          finished_at?: string | null
+          flaky_count?: number
+          id?: string
+          mode?: string
+          passed?: number
+          repaired?: number
+          started_at?: string
+          status?: string
+          ticket_id?: string
+          total_tests?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "runs_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tests: {
+        Row: {
+          created_at: string
+          generated_by: string
+          id: string
+          name: string
+          steps: Json
+          ticket_id: string
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          generated_by?: string
+          id?: string
+          name: string
+          steps?: Json
+          ticket_id: string
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          created_at?: string
+          generated_by?: string
+          id?: string
+          name?: string
+          steps?: Json
+          ticket_id?: string
+          updated_at?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tests_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tickets: {
+        Row: {
+          acceptance_criteria: Json
+          created_at: string
+          description: string
+          id: string
+          jira_status: string
+          key: string
+          priority: string
+          title: string
+        }
+        Insert: {
+          acceptance_criteria?: Json
+          created_at?: string
+          description?: string
+          id?: string
+          jira_status?: string
+          key: string
+          priority?: string
+          title: string
+        }
+        Update: {
+          acceptance_criteria?: Json
+          created_at?: string
+          description?: string
+          id?: string
+          jira_status?: string
+          key?: string
+          priority?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      visual_baselines: {
+        Row: {
+          fingerprint: Json
+          screenshot: string
+          test_name: string
+          updated_at: string
+        }
+        Insert: {
+          fingerprint?: Json
+          screenshot: string
+          test_name: string
+          updated_at?: string
+        }
+        Update: {
+          fingerprint?: Json
+          screenshot?: string
+          test_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
